@@ -14,6 +14,11 @@ export const metadata: ToolMetadata = {
       },
     },
   },
+  annotations: {
+    readOnlyHint: false,
+    destructiveHint: true,
+    openWorldHint: true,
+  },
 };
 
 // Tool implementation

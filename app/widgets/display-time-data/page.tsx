@@ -33,7 +33,7 @@ export default function TimeDataWidget() {
 
   return (
     <div className="w-full p-6">
-      <Card className="max-w-2xl mx-auto">
+      <Card className="max-w-2xl mx-auto border border-red-500">
         <CardHeader>
           <CardTitle>Current Time</CardTitle>
         </CardHeader>
