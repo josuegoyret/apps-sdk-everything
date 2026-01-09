@@ -59,13 +59,13 @@ const registerDisplayTimeDataTools = async (server: McpServer) => {
 
   // Shared widget configuration
   const displayTimeDataWidget: ContentWidget = {
-    id: "display-time-data",
-    title: "Display Time Data",
+    id: "display-date-or-time-data",
+    title: "Display Date or Time Data",
     templateUri: "ui://widget/display-time-data.html",
-    invoking: "Loading time data...",
-    invoked: "Time data loaded",
+    invoking: "Loading date or time data...",
+    invoked: "Date or time data loaded",
     html: html,
-    description: "Widget for displaying time data",
+    description: "Widget for displaying date or time data",
     widgetDomain: baseURL,
     prefersBorder: true,
     accessible: true,
@@ -73,15 +73,15 @@ const registerDisplayTimeDataTools = async (server: McpServer) => {
   };
 
   const widgetTemplateDescription = `
-      Displays the current time and date.
+      Displays the current date or time.
       `;
 
   // Register the shared widget resource
   server.registerResource(
-    "display-time-data-widget",
+    "display-date-or-time-data-widget",
     displayTimeDataWidget.templateUri,
     {
-      title: "Display Time Data",
+      title: "Display Date or Time Data",
       description: widgetTemplateDescription,
       mimeType: "text/html+skybridge",
       _meta: {
@@ -121,13 +121,13 @@ const registerDisplayTimeDataTools = async (server: McpServer) => {
   // TOOL 1: display-time-data
   // ============================================================================
   const startInquiryDescription = `
-    Display the current time and date.
+    Display the current date or time.
   `;
 
   server.registerTool(
-    "display-time-data",
+    "display-date-or-time-data",
     {
-      title: "Display Time Data",
+      title: "Display Date or Time Data",
       description: startInquiryDescription,
       inputSchema: timeDataInputSchema.shape,
       outputSchema: timeDataOutputSchema.shape,
@@ -157,7 +157,7 @@ const registerDisplayTimeDataTools = async (server: McpServer) => {
         content: [
           {
             type: "text" as const,
-            text: "The current time and date is " + time + " " + date,
+            text: textResponse,
           },
         ],
         structuredContent: {
