@@ -1,4 +1,11 @@
 import { baseURL } from "@/baseUrl";
+import {
+  GOOGLE_MAPS_API_URL,
+  NODE_ENV,
+  OWNRIGHT_API_URL,
+  OWNRIGHT_CLIENT_URL,
+  POSTHOST_CSP,
+} from "@/lib/constants";
 
 import { getAppsSdkCompatibleHtml } from "@/lib/utils";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -74,19 +81,19 @@ const registerDisplayTimeDataTools = async (server: McpServer) => {
           _meta: {
             "openai/widgetPrefersBorder": displayTimeDataWidget.prefersBorder,
             "openai/widgetDomain": displayTimeDataWidget.widgetDomain,
-            // "openai/widgetCSP":
-            //   NODE_ENV === "production"
-            //     ? {
-            //         connect_domains: [
-            //           baseURL,
-            //           POSTHOST_CSP,
-            //           GOOGLE_MAPS_API_URL,
-            //           OWNRIGHT_API_URL,
-            //           OWNRIGHT_CLIENT_URL,
-            //         ],
-            //         resource_domains: [baseURL, GOOGLE_MAPS_API_URL],
-            //       }
-            //     : undefined,
+            "openai/widgetCSP":
+              NODE_ENV === "production"
+                ? {
+                    connect_domains: [
+                      baseURL,
+                      POSTHOST_CSP,
+                      GOOGLE_MAPS_API_URL,
+                      OWNRIGHT_API_URL,
+                      OWNRIGHT_CLIENT_URL,
+                    ],
+                    resource_domains: [baseURL, GOOGLE_MAPS_API_URL],
+                  }
+                : undefined,
           },
         },
       ],
