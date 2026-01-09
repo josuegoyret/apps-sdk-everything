@@ -9,6 +9,7 @@ import {
 
 import { getAppsSdkCompatibleHtml } from "@/lib/utils";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import z from "zod";
 
 export type ContentWidget = {
   id: string;
@@ -33,6 +34,22 @@ export function widgetMeta(widget: ContentWidget) {
     "openai/resultCanProduceWidget": widget.resultCanProduceWidget, // informs the modal that the result of the tool call can produce a widget
   } as const;
 }
+
+// Shared input schema for both tools
+export const timeDataInputSchema = z.object({
+  type: z
+    .enum(["date", "time"])
+    .describe(
+      "The type of time data to display. Options: date (for the current date), time (for the current time)."
+    ),
+});
+
+// Shared output schema for both tools
+export const timeDataOutputSchema = z.object({
+  input: timeDataInputSchema.describe("The input data for the time data"),
+  time: z.string().optional().describe("The current time"),
+  date: z.string().optional().describe("The current date"),
+});
 
 const registerDisplayTimeDataTools = async (server: McpServer) => {
   const html = await getAppsSdkCompatibleHtml(
@@ -110,10 +127,10 @@ const registerDisplayTimeDataTools = async (server: McpServer) => {
   server.registerTool(
     "display-time-data",
     {
-      title: "Start Property Closing Inquiry",
+      title: "Display Time Data",
       description: startInquiryDescription,
-      // inputSchema: propertyClosingInquiryInputSchema,
-      // outputSchema: propertyClosingInquiryOutputSchema,
+      inputSchema: timeDataInputSchema.shape,
+      outputSchema: timeDataOutputSchema.shape,
 
       _meta: widgetMeta(displayTimeDataWidget),
       annotations: {
@@ -122,14 +139,32 @@ const registerDisplayTimeDataTools = async (server: McpServer) => {
         openWorldHint: true,
       },
     },
-    async () => {
+    async ({ type }) => {
+      let time = undefined;
+      let date = undefined;
+      if (type === "time") {
+        time = new Date().toLocaleTimeString();
+      } else if (type === "date") {
+        date = new Date().toLocaleDateString();
+      }
+
+      const textResponse =
+        type === "time"
+          ? "The current time is " + time
+          : "The current date is " + date;
+
       return {
         content: [
           {
             type: "text" as const,
-            text: "The current time and date is " + new Date().toLocaleString(),
+            text: "The current time and date is " + time + " " + date,
           },
         ],
+        structuredContent: {
+          input: { type },
+          time,
+          date,
+        },
 
         _meta: widgetMeta(displayTimeDataWidget),
       };
