@@ -115,7 +115,7 @@ const registerDisplayTimeDataTools = async (server: McpServer) => {
         openWorldHint: true,
       },
     },
-    async (input, { _meta }) => {
+    async () => {
       return {
         content: [
           {
