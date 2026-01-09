@@ -4,8 +4,8 @@ import { getAppsSdkCompatibleHtml } from "@/lib/utils";
 
 // Define tool metadata
 export const metadata: ToolMetadata = {
-  name: "read-only-widget",
-  description: "A simple read-only widget displaying time data",
+  name: "display-time-data",
+  description: "Displays the current time",
   _meta: {
     openai: {
       toolInvocation: {
@@ -18,10 +18,10 @@ export const metadata: ToolMetadata = {
 
 // Tool implementation
 export default async function handler() {
-  const html = await getAppsSdkCompatibleHtml(baseURL, "/widgets/read-only");
-
-  // this is missing the structured content to populate the widget
+  const html = await getAppsSdkCompatibleHtml(
+    baseURL,
+    "/widgets/display-time-data"
+  );
 
   return html;
 }
-
