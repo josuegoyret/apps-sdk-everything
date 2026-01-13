@@ -1,5 +1,5 @@
 export async function GET() {
-  return new Response("oA_eZMWVjPfmg_OeC6-EaRhU95rZqLeQ7qdHHWWvPbQ", {
+  return new Response("YSiF8dbZJvNduaVPxOYhHo_FFBS0GBPCl-2woB8-dMQ", {
     headers: { "Content-Type": "text/plain" },
   });
 }
